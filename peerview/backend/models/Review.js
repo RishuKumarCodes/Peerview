@@ -1,4 +1,3 @@
-//for review by students
 import mongoose from 'mongoose';
 
 const reviewSchema = new mongoose.Schema({

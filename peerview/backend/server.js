@@ -1,8 +1,10 @@
-import express from "express";
+import express, { response } from "express";
 import dotenv from "dotenv";
 import  connectDB from "./configs/db.js";
-dotenv.config();
+import userRouter from "./routes/UserRoute.js";
+import cors from "cors";
 
+dotenv.config();
 
 
 const app = express();
@@ -10,9 +12,12 @@ const PORT = process.env.PORT || 3001;
 connectDB();
 
 
+app.use(express.json());
+app.use(cors());
 
-app.get('/',(req,res)=>{
-    res.send('Root is groot');
-})
+app.use('/api/user',userRouter);
+
+
+
 
 app.listen(PORT,()=>console.log(`App listening on port ${PORT}`));
