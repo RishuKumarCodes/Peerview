@@ -4,27 +4,23 @@ import Review from "./Review.js";
 const vendorSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Vendor name is required"],
-    minlength: [2, "Vendor name must be at least 2 characters"],
+    required: true
   },
   category: {
     type: String,
+    required:true
   },
   description: {
     type: String,
+    required:true
   },
   location: {
     type: String,
-    required: [true, "Location is required"],
+    required: true
   },
   avatar: {
     type: String,
-    validate: {
-      validator: function (v) {
-        return !v || /^https?:\/\/.+\..+/.test(v);
-      },
-      message: "Invalid URL for avatar",
-    },
+     required:true
   },
   featured: {
     type: Boolean,
