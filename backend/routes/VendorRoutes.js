@@ -1,4 +1,4 @@
-import express from "express";
+import { Router } from "express";
 import {
   createVendor,
   getAllVendors,
@@ -6,14 +6,19 @@ import {
   updateVendor,
   deleteVendor
 } from "../controllers/VendorController.js";
-import upload from "../utils/multer.js";
+import upload from "../middleware/multerMiddleware.js";
+import authenticate from "../middleware/authMiddleware.js";
+import isAdmin from "../middleware/isAdmin.js";
+import { vendorSchema } from "../validators/vendorValidator.js";
+import {validate} from "../middleware/zodValidator.js";
 
-const router = express.Router();
 
-router.post("/", upload.single("avatar"), createVendor);
-router.get("/", getAllVendors);
-router.get("/:id", getVendorById);
-router.put("/:id", upload.single("avatar"), updateVendor);
-router.delete("/:id", deleteVendor);
+const  vendorRouter = Router();
 
-export default router;
+vendorRouter.post("/",authenticate,isAdmin,upload.single("avatar"), createVendor);
+vendorRouter.get("/", getAllVendors);
+vendorRouter.get("/:id", getVendorById);
+vendorRouter.put("/:id",authenticate,isAdmin,validate(vendorSchema), upload.single("avatar"), updateVendor);
+vendorRouter.delete("/:id",authenticate,isAdmin ,deleteVendor);
+
+export default vendorRouter;

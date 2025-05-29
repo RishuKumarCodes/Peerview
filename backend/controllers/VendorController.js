@@ -1,25 +1,23 @@
 import Vendor from "../models/Vendor.js";
-import { uploadToCloudinary } from "../utils/cloudinary.js";
-import fs from "fs";
+
 
 const createVendor = async (req, res) => {
   try {
     const { name, category, description, location } = req.body;
     const file = req.file;
-
+    
     if (!file) {
       return res.status(400).json({ message: "Avatar image is required" });
     }
 
-    const result = await uploadToCloudinary(file.path, "vendors");
-    fs.unlinkSync(file.path);
+    const url = file.path;
 
     const vendor = new Vendor({
       name,
       category,
       description,
       location,
-      avatar: result.secure_url,
+      avatar: url,
     });
 
     await vendor.save();
@@ -61,11 +59,8 @@ const updateVendor = async (req, res) => {
       return res.status(404).json({ message: "Vendor not found" });
     }
 
-    
     if (req.file) {
-      const result = await uploadToCloudinary(req.file.path, "vendors");
-      fs.unlinkSync(req.file.path);
-      vendor.avatar = result.secure_url;
+      vendor.avatar = req.file.path;
     }
 
     vendor.name = name || vendor.name;
@@ -81,6 +76,7 @@ const updateVendor = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 
 const deleteVendor = async (req, res) => {
