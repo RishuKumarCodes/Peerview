@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import  connectDB from "./configs/db.js";
 import userRouter from "./routes/UserRoute.js";
 import vendorRouter from "./routes/VendorRoutes.js";
+import reviewRouter from "./routes/ReviewRoute.js";
+
 import cors from "cors";
 
 dotenv.config();
@@ -18,6 +20,7 @@ app.use(cors());
 
 app.use('/api/user',userRouter);
 app.use('/api/vendor',vendorRouter );
+app.use('/api/reiview',reviewRouter);
 
 
 
